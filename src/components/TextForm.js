@@ -1,24 +1,38 @@
 import React, { useState } from 'react'
 export default function
     (props) {
+    const handleOnChange = (event) => {
+        setText(event.target.value)
+    }
     const handleUpClick = () => {
         // Why react state is needed
         // Text="hello";
         // console.log(Text);
         setText(text.toUpperCase());
+        props.showAlert("Converted to Upper Case", "success");
+
     }
     const handleLoClick = () => {
         setText(text.toLowerCase());
-    }
-    const handleOnChange = (event) => {
-        setText(event.target.value)
+        props.showAlert("Converted to Lower Case", "success");
     }
     const handleClClick = () => {
         setText("");
+        props.showAlert("Text is cleared", "success");
+
     }
 
     const [text, setText] = useState("");
     // let Text="hi";
+    const wordLength = (text) => {
+        if (text.length == 0) {
+            return 0;
+        }
+        if (text.slice(-1) == " ") {
+            return text.split(" ").length - 1
+        }
+        return text.split(" ").length
+    }
     return (
         <>
             <div className='container' style={{ color: props.mode === "light" ? "black" : "white" }}>
@@ -35,10 +49,10 @@ export default function
             </div>
             <div className="container" style={{ color: props.mode === "light" ? "black" : "white" }}>
                 <h2>Your Text Summary</h2>
-                <p>{text.split(" ").length} words and {text.length} characters</p>
+                <p>{wordLength(text)} words and {text.length} characters</p>
                 <p>{0.008 * text.split("").length} Minutes read</p>
                 <h2>Preview</h2>
-                <p>{text.length>0?text:"Enter something to preview text"}</p>
+                <p>{text.length > 0 ? text : "Enter something to preview text"}</p>
             </div>
         </>
     )
